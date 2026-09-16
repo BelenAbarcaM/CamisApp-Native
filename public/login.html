@@ -1,0 +1,180 @@
+<html>
+
+ 
+
+<head>
+
+ 
+
+</head>
+
+<body>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.login{
+    width:400px;
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+.login h1{
+    text-align:center;
+    color:#333;
+    margin-bottom:30px;
+}
+
+.login label{
+    display:block;
+    margin-top:18px;
+    margin-bottom:8px;
+    color:#555;
+    font-weight:bold;
+}
+
+.login input[type=text],
+.login input[type=password]{
+    width:100%;
+    padding:14px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    outline:none;
+    transition:.3s;
+    font-size:16px;
+}
+
+.login input:focus{
+    border-color:#4facfe;
+    box-shadow:0 0 10px rgba(79,172,254,.4);
+}
+
+#btn-guardar{
+    width:100%;
+    margin-top:25px;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#4facfe;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+#btn-guardar:hover{
+    background:#008cff;
+    transform:translateY(-2px);
+}
+
+a{
+    display:block;
+    margin-top:20px;
+    text-align:center;
+    text-decoration:none;
+    color:#4facfe;
+    font-weight:bold;
+}
+
+a:hover{
+    text-decoration:underline;
+}
+</style>
+ 
+
+<div class="login">
+
+<h1>Ingreso al sistema</h1>
+
+<label>Email</label>
+<input type="text" placeholder="Escriba el email" id="email">
+
+<label>Contraseña</label>
+<input type="password" id="clave" placeholder="Escriba la contraseña">
+
+<input type="button" id="btn-guardar" value="Iniciar sesión">
+
+<a href="registro.html">No tengo una cuenta</a>
+
+</div>
+<script>
+
+const btnGuardar = document.getElementById('btn-guardar');
+
+btnGuardar.addEventListener('click', async () => {
+
+  // Obtener colores actuales de cada parte
+
+  const usuario = {
+
+    email: document.getElementById('email').value,
+
+    clave: document.getElementById('clave').value,
+
+  
+
+  };
+
+  // Enviar via fetch al servidor
+
+  const resp = await fetch('/api/login', {
+
+    method: 'POST',
+
+    headers: {
+
+      'Content-Type': 'application/json'
+
+    },
+
+    body: JSON.stringify(usuario)
+
+  });
+
+  const data = await resp.json();
+
+  console.log('Respuesta:', data);
+
+  if (data.error != undefined)
+
+  {
+
+    alert(data.error)
+
+  }
+
+  else
+
+  {
+
+  alert('Usuario logueado correctamente. Redirigiendo a la página principal.');
+
+  localStorage.setItem("token", data.token)
+
+  location.href="index.html"
+
+  }
+
+ 
+
+});
+
+</script>
+
+</body>
+
+</html>
